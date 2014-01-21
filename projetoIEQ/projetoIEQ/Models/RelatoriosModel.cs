@@ -5,7 +5,7 @@ using System.Web;
 
 namespace projetoIEQ.Models
 {
-    public class Relatorios
+    public class RelatoriosModel
     {
     }
 }

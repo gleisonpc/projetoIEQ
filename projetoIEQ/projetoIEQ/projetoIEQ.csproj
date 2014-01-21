@@ -135,12 +135,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Eventos.cs" />
-    <Compile Include="Models\Financeiro.cs" />
-    <Compile Include="Models\Home.cs" />
-    <Compile Include="Models\Membros.cs" />
-    <Compile Include="Models\Relatorios.cs" />
-    <Compile Include="Models\Usuarios.cs" />
+    <Compile Include="Models\EventosModel.cs" />
+    <Compile Include="Models\FinanceiroModel.cs" />
+    <Compile Include="Models\HomeModel.cs" />
+    <Compile Include="Models\MembrosModel.cs" />
+    <Compile Include="Models\RelatoriosModel.cs" />
+    <Compile Include="Models\UsuariosModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
