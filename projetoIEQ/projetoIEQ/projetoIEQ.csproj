@@ -40,6 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="mysql.data">
+      <HintPath>..\mysql-connector-net-6.0.7-noinstall\mysql.data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -126,6 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\EventosController.cs" />
     <Compile Include="Controllers\FianceiroController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -135,6 +139,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DatabaseModel.cs" />
     <Compile Include="Models\EventosModel.cs" />
     <Compile Include="Models\FinanceiroModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
@@ -233,6 +238,7 @@
     <Content Include="Views\Eventos\Index.cshtml" />
     <Content Include="Views\Fianceiro\Index.cshtml" />
     <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Database\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
