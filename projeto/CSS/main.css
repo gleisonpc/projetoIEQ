@@ -1,0 +1,38 @@
+.membrosTable{
+
+	border-collapse:collapse;
+	border: 1px solid black;
+	font-family: Calibri;
+	text-align: center
+	
+
+}
+
+.title{
+
+	border-collapse:collapse;
+	border: 1px solid black;
+	font-size: 120%;
+
+
+}
+
+.membros{
+
+	position: absolute;
+	top: 15%;
+	right: 0;
+	bottom: 0;
+	left: 20%;
+	background: rgba(0,0,0,0.1);
+	width: 60%;
+	height: 50%;
+
+}
+
+.windows{
+	background: rgba(0,0,0,0.6);
+	border:1px solid RGB(230,230,255);
+	width: 100%;
+	height: 100%;
+}

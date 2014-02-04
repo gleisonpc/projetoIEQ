@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" href="CSS\main.css" type="text/css" media="screen">
+	<script type="text/javascript" src="Model/membroModel.js"></script>
+	<script type="text/javascript" src="Controller/membroController.js"></script>
+	<script type="text/javascript" src="View/membroView.js"></script>
+	<script type="text/javascript" src="Framework/jquery-ui-1.10.4/jquery-1.10.2.js"></script> 
+	<script type="text/javascript" src="Framework/jquery-ui-1.10.4/ui/jquery-ui.js"></script> 
+
+</head>
+
+<body bgcolor=#F5F5F5>
+
+	<div id='membros' name='membros' class='membros'>
+
+		<script>
+
+			c = new controller();
+
+			var begin = "<h1>Lista de Membros</h1>" + 
+						"<table id='membrosTable' class='membrosTable'>" + 
+						"<tr class='title'>" +
+						"<td>  Linha  </td>" +
+						"<td>  Código  </td>" +
+						"<td>  Nome  </td>" +
+						"<td></td>" +
+						"<td></td>" +						
+						"</tr>";
+
+			document.getElementById('membros').innerHTML += begin;
+
+			c.disingTable('c');
+
+			document.getElementById('membros').innerHTML +=  
+			"</table>" + 
+			"<br>" +
+			"<input type='button' value='Novo' onclick='javascript:c.write(\"c\")'>";
+
+		</script> 
+	
+	</div>
+
+	<div id="dialog" title="Basic dialog" class="windows">
+
+		<script>
+
+			$( "#dialog" ).dialog({ autoOpen: false });
+			
+		</script>
+
+	</div>
+
+</body>
+
+</html>
