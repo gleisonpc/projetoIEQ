@@ -5,9 +5,10 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="stylesheet" href="CSS\main.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="CSS\jquery-ui.css" type="text/css" media="screen">
+	<script src="http://localhost/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="Model/membroModel.js"></script>
 	<script type="text/javascript" src="Controller/membroController.js"></script>
-	<script type="text/javascript" src="View/membroView.js"></script>
 	<script type="text/javascript" src="Framework/jquery-ui-1.10.4/jquery-1.10.2.js"></script> 
 	<script type="text/javascript" src="Framework/jquery-ui-1.10.4/ui/jquery-ui.js"></script> 
 
@@ -17,9 +18,11 @@
 
 	<div id='membros' name='membros' class='membros'>
 
-		<script>
-
+		<script id='Teste'>
+			
 			c = new controller();
+
+			c.loadMembros('c');			
 
 			var begin = "<h1>Lista de Membros</h1>" + 
 						"<table id='membrosTable' class='membrosTable'>" + 
@@ -28,28 +31,92 @@
 						"<td>  Código  </td>" +
 						"<td>  Nome  </td>" +
 						"<td></td>" +
+						"<td></td>" +
 						"<td></td>" +						
 						"</tr>";
 
 			document.getElementById('membros').innerHTML += begin;
 
-			c.disingTable('c');
-
 			document.getElementById('membros').innerHTML +=  
 			"</table>" + 
 			"<br>" +
-			"<input type='button' value='Novo' onclick='javascript:c.write(\"c\")'>";
+			"<input type='button' value='Novo' onclick='javascript:c.newMembro()'>";
 
 		</script> 
 	
 	</div>
 
-	<div id="dialog" title="Basic dialog" class="windows">
+	<div id="membrosNew" title="Novo Cadastro">
 
 		<script>
 
-			$( "#dialog" ).dialog({ autoOpen: false });
-			
+			var begin = "<h1>Novo Cadastro</h1>";
+
+			document.getElementById('membrosNew').innerHTML += begin;
+
+			var field = "<label> Código </label>" +
+						"<input type='number' value='' id='codInputN' readonly='readonly'/>" +
+						"<br>" +
+						"<label> Nome </label>" +
+						"<input type='text' value='' id='nameInputN'/>" +
+						"<br>" +
+						"<input type='submit' value='Salvar' onclick='javascript:c.writeNew(\"c\",\"membrosNew\")'/>" +
+						"<input type='submit' value='Cancelar' onclick='javascript:c.cancelDialog(\"membrosNew\")'/>";
+
+			document.getElementById('membrosNew').innerHTML += field;
+
+			$( "#membrosNew" ).dialog({ autoOpen: false, width: 1000, resizable: true  });
+
+		</script>
+
+	</div>
+
+	<div id="membrosView" title="Visualização de Cadastro">
+
+		<script>
+
+			var begin = "<h1>Visualização de Cadastro</h1>";
+
+			document.getElementById('membrosView').innerHTML += begin;
+
+			var field = "<label> Código </label>" +
+						"<input type='number' value='' id='codInputV' readonly='readonly'/>" +
+						"<br>" +
+						"<label> Nome </label>" +
+						"<input type='text' value='' id='nameInputV' readonly='readonly'/>" +
+						"<br>" + 
+						"<input type='submit' value='Cancelar' onclick='javascript:c.cancelDialog(\"membrosView\")'/>";
+
+			document.getElementById('membrosView').innerHTML += field;
+
+			$( "#membrosView" ).dialog({ autoOpen: false, width: 1000, resizable: true  });
+
+		</script>
+
+	</div>
+
+
+	<div id="membrosEdit" title="Edição de Cadastro">
+
+		<script>
+
+			var begin = "<h1>Editar Cadastro</h1>";
+
+			document.getElementById('membrosEdit').innerHTML += begin;
+
+			var field = "<label> Código </label>" +
+						"<input type='number' value='' id='codInput' readonly='readonly'/>" +
+						"<br>" +
+						"<label> Nome </label>" +
+						"<input type='text' value='' id='nameInput'/>" +
+						"<br>" +
+						"<input type='submit' value='Salvar' onclick='javascript:c.writeEdit(\"c\",\"membrosEdit\")'/>" +
+						"<input type='submit' value='Cancelar' onclick='javascript:c.cancelDialog(\"membrosEdit\")'/>";
+
+			document.getElementById('membrosEdit').innerHTML += field;
+
+			$( "#membrosEdit" ).dialog({ autoOpen: false, width: 1000, resizable: true  });
+
 		</script>
 
 	</div>

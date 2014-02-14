@@ -1,17 +1,52 @@
 var controller = function(){
 
-	membro = new membroModel();
-	this.data = new Array();
-	this.data = membro.getMembro();
-
 	var lastRow;
 
-	this.write = function(nameInst){
+	var dataMembros;
 
-		var cod = '00000';
-		var name = 'TESTE';
+	var socket = io.connect('http://localhost:80');
 
-		membro.setMembro(cod, name);
+	this.loadMembros = function(nameInst){
+	
+		socket.on('loadMembros', function (membro) {
+
+			var data = new Array();
+
+			for (var i in membro){
+
+				data.push(new membros(membro[i].cod, membro[i].name));
+
+			}
+
+			disingTable(nameInst, data);
+
+			dataMembros = data;
+			
+		});
+
+	}
+
+	this.newMembro = function(){
+
+		$( "#membrosNew" ).dialog("open");
+		this.generateCod('codInputN');
+
+	}
+
+	this.writeNew = function(nameInst, nameDialog){
+
+		var cod = document.getElementById("codInputN").value;
+		var name = document.getElementById("nameInputN").value;
+
+		dataMembros.push(new membros(cod, name));
+
+		socket.emit('gravarMembros', new membros(cod, name));
+
+		if(cod == 1){
+
+			lastRow = 0;
+
+		}
 
 		var table = document.getElementById("membrosTable");
 			  {
@@ -22,15 +57,21 @@ var controller = function(){
 				  var cell3 = row.insertCell(2);
 				  var cell4 = row.insertCell(3);
 				  var cell5 = row.insertCell(4);
+				  var cell6 = row.insertCell(5);
 
 				  cell1.innerHTML = parseInt(lastRow) + 1;
-				  cell2.innerHTML = this.data[lastRow].cod;
-				  cell3.innerHTML = this.data[lastRow].name;
-				  cell4.innerHTML = "<input type='button' value='Editar'>";
-				  cell5.innerHTML = "<input type='button' value='Excluir' onclick='javascript:" + nameInst + ".delete(" + nameInst + ".data[" + lastRow + "].cod,\""+nameInst+"\")'>";
+				  cell2.innerHTML = dataMembros[lastRow].cod;
+				  cell3.innerHTML = dataMembros[lastRow].name;
+				  cell4.innerHTML = "<input type='button' value='Editar' onclick='javascript:" + nameInst + ".edit(" + lastRow + ")'>";
+				  cell5.innerHTML = "<input type='button' value='Visualizar'onclick='javascript:" + nameInst + ".viewMembro(" + lastRow + ")'>";
+				  cell6.innerHTML = "<input type='button' value='Excluir' onclick='javascript:" + nameInst + ".delete(" + lastRow + ",\""+nameInst+"\")'>";
 			  }
 
 		lastRow = parseInt(lastRow) + 1;
+
+		document.getElementById("nameInputN").value = '';
+
+		this.cancelDialog(nameDialog);
 		
 	}
 
@@ -40,11 +81,13 @@ var controller = function(){
 
 	}
 
-	this.disingTable = function(nameInst){
+	function disingTable(nameInst, data){
+
+		//console.log(data);
 
 		var j = 0;
 
-		for(i in this.data){
+		for(i in data){
 
 			j = parseInt(i) + 1;
 
@@ -57,12 +100,14 @@ var controller = function(){
 				  var cell3 = row.insertCell(2);
 				  var cell4 = row.insertCell(3);
 				  var cell5 = row.insertCell(4);
+				  var cell6 = row.insertCell(5);
 
 				  cell1.innerHTML = j;
-				  cell2.innerHTML = this.data[i].cod;
-				  cell3.innerHTML = this.data[i].name;
-				  cell4.innerHTML = "<input type='button' value='Editar' onclick='javascript:c.edit()'>";
-				  cell5.innerHTML = "<input type='button' value='Excluir' onclick='javascript:" + nameInst + ".delete(" + nameInst + ".data[" + i + "].cod,\""+nameInst+"\")'>";
+				  cell2.innerHTML = data[i].cod;
+				  cell3.innerHTML = data[i].name;
+				  cell4.innerHTML = "<input type='button' value='Editar' onclick='javascript:" + nameInst + ".edit(" + i + ")'>";
+				  cell5.innerHTML = "<input type='button' value='Visualizar'onclick='javascript:" + nameInst + ".viewMembro(" + i + ")'>";
+				  cell6.innerHTML = "<input type='button' value='Excluir' onclick='javascript:" + nameInst + ".delete(" + i + ",\""+nameInst+"\")'>";
 			  }
 
 			  lastRow = j;
@@ -70,9 +115,67 @@ var controller = function(){
 
 	}
 
-	this.delete = function(cod, nameInst){
+	this.delete = function(index, nameInst){
 
-		console.log(nameInst);
+		console.log(index);
+		console.log(dataMembros[index]);
+
+		for(i in dataMembros){
+
+			document.getElementById("membrosTable").deleteRow(1);
+
+			if(dataMembros[index].cod == dataMembros[i].cod){
+
+				j = i;
+
+			}
+			else
+			{
+				console.log("Nenhum Registro Encontrado!!");
+			}
+
+		}
+
+		socket.emit("deleteMembro", new membros(dataMembros[index].cod));
+
+		socket.on("deleteMembroCarrega", function(){
+
+			this.loadMembros(nameInst);
+
+			console.log("PASSEI");
+
+		});
+
+		socket.on("deleteMembroMostra", function(){
+
+			//dataMembros.splice(j,1);
+
+			//console.log("TO PASSANDO!!!");
+
+			//disingTable(nameInst, dataMembros);
+
+		});
+		
+
+	}
+
+	this.edit = function(index){
+
+		console.log(dataMembros[index]);
+		console.log(index);
+
+
+		document.getElementById("codInput").value = dataMembros[index].cod;
+		document.getElementById("nameInput").value = dataMembros[index].name;
+
+		$( "#membrosEdit" ).dialog("open");
+
+	}
+
+	this.writeEdit = function(nameInst, nameDialog){
+
+		var cod = document.getElementById("codInput").value;
+		var name = document.getElementById("nameInput").value;
 
 		for(i in this.data){
 
@@ -90,16 +193,49 @@ var controller = function(){
 
 		}
 
-		this.data.splice(j,1);
+		this.data[j].cod = cod;
+		this.data[j].name = name;
 
 		this.disingTable(nameInst);
+		this.cancelDialog(nameDialog);
 
 	}
 
-	this.edit = function(){
+	this.cancelDialog = function(nameDialog){
 
-		$( "#dialog" ).dialog("open");
-    	
+		$("#" + nameDialog + "").dialog("close");
+
+	}
+
+	this.generateCod = function(nameInput){
+
+		var index = parseInt(dataMembros.length) - 1;
+
+		//console.log(index);
+
+		if(index == -1){
+
+			document.getElementById(nameInput).value = 1;
+
+		}
+		else{
+			
+			document.getElementById(nameInput).value = parseInt(dataMembros[index].cod) + 1;
+		
+		}
+
+	}
+
+	this.viewMembro = function(index){
+
+		console.log(dataMembros[index]);
+
+		document.getElementById("codInputV").value = dataMembros[index].cod;
+		document.getElementById("nameInputV").value = dataMembros[index].name;
+
+		$( "#membrosView" ).dialog("open");
+
+
 	}
 
 }
